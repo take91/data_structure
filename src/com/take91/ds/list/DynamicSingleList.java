@@ -1,37 +1,37 @@
 package com.take91.ds.list;
 
-public class DynamicList<T> implements CustomList<T> {
-	private class Node {
+public class DynamicSingleList<T> implements CustomList<T> {
+	class Node {
 		T data;
 		Node nextLink;
 		int index;
-
-		public Node search(Node n, int index) {
-			if (n.index == index) {
-				return n;
-			} else if (n.nextLink != null && n.index != index) {
-				return search(n.nextLink, index);
-			} else {
-				return null;
-			}
-		}
 	}
 
 	private Node firstNode;
 	private Node curNode;
 	private int size = 0;
 
-	public DynamicList() {
+	public DynamicSingleList() {
 		this.firstNode = new Node();
 		this.curNode = firstNode;
 	}
 
+	public Node search(Node n, int index) {
+		if (n.index == index) {
+			return n;
+		} else if (n.nextLink != null && n.index != index) {
+			return search(n.nextLink, index);
+		} else {
+			return null;
+		}
+	}
+
 	@Override
 	public T get(int index) {
-		if (index >= this.size) {
+		if (index >= this.size || index < 0) {
 			throw new IndexOutOfBoundsException();
 		}
-		return this.firstNode.search(this.firstNode, index).data;
+		return search(this.firstNode, index).data;
 	}
 
 	@Override
@@ -57,7 +57,14 @@ public class DynamicList<T> implements CustomList<T> {
 
 	@Override
 	public String toString() {
-		return super.toString();
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < this.size; i++) {
+			if (i != this.size - 1) {
+				sb.append(get(i) + " , ");
+			} else {
+				sb.append(get(i));
+			}
+		}
+		return "[ " + sb.toString() + " ]";
 	}
-
 }
